@@ -1,0 +1,215 @@
+{
+  "name": "public-vs-private-enrollment-by-town",
+  "datapackage_version": "1.0-beta.18",
+  "title": "Public vs Private Enrollment by Town",
+  "description": "Public vs Private Enrollment by Town reports the number and proportion of students enrolled in public or private schools.",
+  "version": "1.0",
+  "licenses": [{
+    "url": "http://opendatacommons.org/licenses/pddl/",
+    "name": "Open Data Commons Public Domain",
+    "version": "1.0",
+    "id": "odc-pddl"
+  }],
+  "sources": [{
+    "name": "uscensus",
+    "web": ""
+  }],
+  "author":[{
+    "name": "Jenna Daly",
+    "email": "jdaly@ctdata.org",
+    "web": "http://ctdata.org"
+  }],
+  "contributor": [],
+  "resources": [{
+    "path": "data/public-vs-private-enrollment-town-2016.csv",
+    "format": "csv",
+    "schema": {
+      "fields": [{
+          "name": "Town",
+          "type": "string",
+          "dimension": false
+        }, {
+          "name": "FIPS",
+          "type": "string",
+          "dimension": false
+        }, {
+          "name": "Year",
+          "type": "string",
+          "dimension": false
+        }, {
+         "name": "Grade",
+          "type": "string",
+          "dimension": true,
+          "constraints": {
+            "enum": ["Total", 
+                     "Pre-K", 
+                     "K", 
+                     "Grades 1 to 4", 
+                     "Grades 5 to 8", 
+                     "Grades 9 to 12"]
+         }
+        }, { 
+         "name": "School Type",
+          "type": "string",
+          "dimension": true,
+          "constraints": {
+            "enum": ["Total", "Public", "Private"]
+         }
+        }, {
+          "name": "Measure Type",
+          "type": "string",
+          "dimension": true,
+          "constraints": {
+            "enum": ["Number", "Percent"]
+         }
+        }, {
+          "name": "Variable",
+          "type": "string",
+          "dimension": true,
+          "constraints": {
+            "enum": ["Enrolled Students", "Margins of Error"]
+         }
+        }, {
+          "name": "Value",
+          "type": "number",
+          "dimension": false
+        }]
+      }
+    }
+  ],
+  "last_modified": "12/13/2017",
+  "ckan_extras": {
+    "full_description": {
+      "ckan_name": "Full Description",
+      "value": "Public vs. Private Enrollment reports the number of people 3 years of age and older who are enrolled in school from Pre-K through Grade 12, by grade and the type of school they are enrolled in. This dataset also reports the proportion of these enrolled students by grade and the type of school. Data originates from the US Census American Community Survey (ACS), table B14002.",
+      "type": "string"
+    },
+    "suppression": {
+      "ckan_name": "Suppression",
+      "value": "",
+      "type": "string"
+    },
+    "technical_notes": {
+      "ckan_name": "Technical Notes",
+      "value": "",
+      "type": "string"
+    },
+    "socrata": {
+      "ckan_name": "Socrata",
+      "value": "False",
+      "type": "string"
+    },
+    "socrata_url": {
+      "ckan_name": "Socrata Dataset URL",
+      "value": "",
+      "type": "string"
+    },
+    "socrata_dataset_name": {
+      "ckan_name": "Socrata Dataset Name",
+      "value": "",
+      "type": "string"
+    }, 
+    "domain": {
+      "ckan_name": "Domain",
+      "value": "Education",
+      "type": "string"
+    },
+    "subdomain": {
+      "ckan_name": "Subdomain",
+      "value": "Student Demographics",
+      "type": "string"
+    },
+    "numerator": {
+      "ckan_name": "Numerator",
+      "value": "Number of enrolled students, by town, year, grade, and type of school.",
+      "type": "string"
+    },
+    "denominator": {
+      "ckan_name": "Denominator",
+      "value": "For values where the type of school is 'Total', the denominator is the total number of students enrolled in Pre-K through Grade 12 for that town and year. Otherwise, the denominator is the total number of enrolled students for that town, year, and grade.",
+      "type": "string"
+    },       
+    "geography": {
+      "ckan_name": "Geography",
+      "value": "Town",
+      "type": "string",
+      "constraints": {"enum": ["Town", "County", "Town/County", "District", "Other"]}
+    },
+    "frequency": {
+      "ckan_name": "Frequency",
+      "value": "Annual",
+      "type": "string"
+    },
+    "years_in_catalog": {
+      "ckan_name": "Years in Catalog",
+      "value": ["2006-2010", "2007-2011", "2008-2012", "2009-2013", "2010-2014", "2011-2015", "2012-2016"],
+      "type": "array"
+    },
+    "latest_year": {
+      "ckan_name": "Latest Year Available",
+      "value": "2012-2016",
+      "type": "string"
+    },
+    "disabled_views": {
+      "ckan_name": "Disabled Views",
+      "value": [],
+      "type": "array",
+      "constraints": {"enum": ["map", "table", "bar", "line"]}
+    },
+    "units": {
+      "ckan_name": "Units",
+      "value": {
+        "Number": "",
+        "Percent": "%"
+      }
+    },
+    "expected_number_of_geographies": {
+      "ckan_name": "Expected Number of Unique Geographies",
+      "value": 170,
+      "type": "string"
+    },     
+    "default": {      
+      "ckan_name": "Default",
+      "value": {
+        "Town": "Connecticut",
+        "Year": ["2012-2016"],
+        "Grade": "Total",   
+        "School Type": ["Public", "Private"],         
+        "Measure Type": "Percent", 
+        "Variable": "Enrolled Students"
+      },
+      "type": "object"
+    } 
+  },
+  "spot_checks": [
+    {
+      "type": "$lookup",
+      "filter": {
+        "Town": "Southington",
+        "Year":	"2011-2015",
+        "Grade": "Total",
+        "School Type": "Private",
+        "Variable":	"Margins of Error",
+        "Measure Type":	"Percent"
+      },
+      "expected": {
+        "type": "$match",
+        "number type": "float",
+        "value": 3.00
+      } 
+    }  
+  ],
+  "dimension_groups": [
+     {
+       "Grade": ["Total", 
+                 "Pre-K", 
+                 "K", 
+                 "Grades 1 to 4", 
+                 "Grades 5 to 8", 
+                 "Grades 9 to 12"],
+       "School Type": ["Total", "Public", "Private"],
+       "Measure Type": ["Number", "Percent"], 
+       "Variable": ["Enrolled Students", "Margins of Error"]     
+     }
+  ]
+}
